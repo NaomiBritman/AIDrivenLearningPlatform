@@ -1,0 +1,94 @@
+{
+  "info": {
+    "name": "Practicum Project API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "http://localhost:3000/users",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"123456789\",\n  \"name\": \"Naomi Britman\",\n  \"phone\": \"0501234567\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/users"
+          }
+        },
+        {
+          "name": "Get User By ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/users/123456789"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/categories"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sub Categories",
+      "item": [
+        {
+          "name": "Get SubCategories By Category ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/sub-categories/category/CATEGORY_ID_HERE"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prompts",
+      "item": [
+        {
+          "name": "Create Prompt (AI)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "http://localhost:3000/prompts",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"P001\",\n  \"user_id\": \"USER_OBJECT_ID_HERE\",\n  \"category_id\": \"CATEGORY_OBJECT_ID_HERE\",\n  \"sub_category_id\": \"SUBCATEGORY_OBJECT_ID_HERE\",\n  \"prompt\": \"Explain what is photosynthesis\",\n  \"category_name\": \"Science\",\n  \"sub_category_name\": \"Biology\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Prompts By User ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/prompts/user/USER_OBJECT_ID_HERE"
+          }
+        },
+        {
+          "name": "Get All Prompts (Admin)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/prompts/all"
+          }
+        }
+      ]
+    }
+  ]
+}
