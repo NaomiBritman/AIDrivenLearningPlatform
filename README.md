@@ -1,208 +1,108 @@
-# AI Teacher - Learning Platform
+# AI Teacher – AI-Driven Learning Platform
 
-A mini learning platform that allows users to select what they want to learn by category and sub-category, send prompts to an AI to receive generated lessons, and view their learning history.
+A learning platform where a user picks a category and sub-category, sends a prompt, and receives an AI-generated lesson. Every lesson is saved, so users can come back to their learning history, and an admin can see all users and their prompts.
 
----
+## Features
 
-## Technologies Used
+- Sign up and sign in with JWT authentication
+- Role-based access: regular users and an admin
+- Choose a topic by category and sub-category
+- Send a prompt and get a structured lesson from the OpenAI API
+- Personal learning history
+- Admin dashboard with all users and their prompt history
 
-**Backend:**
-- Node.js + TypeScript
-- Express.js
-- MongoDB + Mongoose
-- OpenAI GPT API
-- JWT Authentication
-- cors
-- dotenv
+## Tech stack
 
-**Frontend:**
-- React + TypeScript
-- React Router DOM
-- Axios
+| Layer | Technologies |
+| --- | --- |
+| Front end | React, TypeScript, React Router, Axios |
+| Back end | Node.js, Express, TypeScript |
+| Database | MongoDB with Mongoose |
+| AI | OpenAI Chat Completions API |
+| Auth | JSON Web Tokens |
 
----
-
-## Project Structure
+## Project structure
 
 ```
-פרויקט פרקטיקום/
-├── backend/                  # Backend REST API
+AIDrivenLearningPlatform/
+├── backend/
 │   └── src/
-│       ├── config/           # Database connection
-│       ├── controllers/      # Request handlers
-│       ├── models/           # Mongoose models (User, Category, SubCategory, Prompt)
-│       ├── routes/           # API route definitions
-│       ├── services/         # Business logic & AI integration
-│       ├── Middleware/       # Authentication & Authorization
-│       ├── app.ts            # Express app setup
-│       └── server.ts         # Entry point
-└── frontend/                 # Frontend Web Application
+│       ├── config/        # Database connection
+│       ├── controllers/   # Request handlers
+│       ├── models/        # Mongoose models: User, Category, SubCategory, Prompt
+│       ├── routes/        # API routes
+│       ├── services/      # Business logic and AI integration
+│       ├── Middleware/    # Authentication and authorization
+│       ├── app.ts         # Express app setup
+│       └── server.ts      # Entry point
+└── frontend/
     └── src/
-        ├── pages/            # React pages (SignIn, SignUp, Customer, History, Admin)
-        ├── components/       # Shared components (Header)
-        ├── hooks/            # Custom React hooks
-        ├── services/         # API calls
-        └── App.tsx           # Main application component
+        ├── pages/         # SignIn, SignUp, Customer, History, Admin
+        ├── components/    # Shared components
+        ├── hooks/         # Custom React hooks
+        ├── services/      # API calls
+        └── App.tsx
 ```
 
----
+## API
 
-## API Endpoints
+| Method | Route | Description | Access |
+| --- | --- | --- | --- |
+| POST | `/users` | Register a new user | Public |
+| POST | `/users/signin/:id` | Sign in and receive a JWT | Public |
+| GET | `/users` | List all users | Admin |
+| GET | `/categories` | List categories | User |
+| GET | `/sub-categories/category/:category_id` | List sub-categories of a category | User |
+| POST | `/prompts` | Send a prompt to the AI and save the lesson | User |
+| GET | `/prompts/user/:user_id` | A user's learning history | User |
+| GET | `/prompts/all` | All prompts | Admin |
 
-| Method | Route | Description | Auth |
-|--------|-------|-------------|------|
-| POST | /users | Register a new user | None |
-| POST | /users/signin/:id | Login and receive JWT token | None |
-| GET | /users | Get all users | Admin |
-| GET | /categories | Get all categories | User |
-| GET | /sub-categories/category/:category_id | Get sub-categories by category | User |
-| POST | /prompts | Send prompt to AI and save lesson | User |
-| GET | /prompts/user/:user_id | Get user's learning history | User |
-| GET | /prompts/all | Get all prompts history | Admin |
+Protected routes expect an `Authorization: Bearer <token>` header. A Postman collection is included in `backend/postman_collection.json`.
 
----
-
-## Assumptions
-
-- Users are identified by a unique ID string
-- Admin accounts are determined by matching the user ID with the ADMIN_ID environment variable
-- Categories and sub-categories must exist before users can submit prompts
-- The AI generates lesson-like responses using OpenAI GPT API
-- All protected routes require JWT authentication via Bearer token
-- MongoDB Atlas is used as the cloud database solution
-- The frontend runs on port 3001 and the backend on port 3000
-
----
-
-## Setup Instructions
+## Getting started
 
 ### Prerequisites
-- Node.js v16+
-- MongoDB Atlas account (or local MongoDB)
-- OpenAI API key
 
-### Backend Setup
+- Node.js
+- A MongoDB database (MongoDB Atlas or local)
+- An OpenAI API key
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd פרויקט פרקטיקום
-```
+### Back end
 
-2. Install backend dependencies:
 ```bash
 cd backend
 npm install
-```
-
-3. Create a `.env` file inside `backend/`:
-```
-MONGODB_URI=your_mongodb_connection_string
-GROQ_API_KEY=your_openai_api_key
-JWT_SECRET=your_jwt_secret
-ADMIN_ID=236589475
-```
-
-4. Run the backend:
-```bash
+cp .env.example .env   # then fill in your own values
 npm run dev
 ```
 
-The server will start on `http://localhost:3000`
+The server runs on `http://localhost:3000`.
 
-### Frontend Setup
+Environment variables in `backend/.env`:
 
-1. Navigate to the frontend folder:
-```bash
-cd ../frontend
-```
+| Variable | Description |
+| --- | --- |
+| `MONGODB_URI` | MongoDB connection string |
+| `OPENAI_API_KEY` | OpenAI API key |
+| `JWT_SECRET` | Secret used to sign tokens |
+| `ADMIN_ID` | ID of the user who gets admin access |
 
-2. Install frontend dependencies:
-```bash
-npm install
-```
+Never commit the `.env` file or real credentials.
 
-3. Run the frontend:
-```bash
-npm start
-```
+### Front end
 
-The frontend will start on `http://localhost:3001`
-
----
-
-## Sample .env File
-
-```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database-name?retryWrites=true&w=majority
-GROQ_API_KEY=your_openai_api_key_here
-JWT_SECRET=your_jwt_secret_key_here
-ADMIN_ID=236589475
-```
-
----
-
-## How to Run Locally
-
-1. Start the backend server (Terminal 1):
-```bash
-cd backend
-npm run dev
-```
-
-2. Start the frontend (Terminal 2):
 ```bash
 cd frontend
+npm install
 npm start
 ```
 
-3. Open your browser at `http://localhost:3001`
+The app runs on `http://localhost:3001`.
 
----
+## Example flow
 
-## Viewing Database Content
-
-The project uses MongoDB Atlas as the cloud database. The database is publicly accessible (IP whitelist: 0.0.0.0/0):
-
-**MongoDB Connection String:**
-```
-mongodb+srv://naomi0548553334_db_user:RAjmc66llkdXGWsE@practicum-project.eiui5o8.mongodb.net/Practicum-Project?retryWrites=true&w=majority
-```
-
-**Collections:**
-- **users** - All registered users
-- **categories** - Learning categories (e.g., Science, Math)
-- **sub_categories** - Sub-categories under each category (e.g., Space, Physics)
-- **prompts** - All user questions and AI responses (learning history)
-
-**How to view:**
-
-1. **Via MongoDB Compass (Recommended):**
-   - Download MongoDB Compass from https://www.mongodb.com/products/compass
-   - Paste the connection string above
-   - Click "Connect"
-   - Browse the collections visually
-
-2. **Via MongoDB Atlas Web Interface:**
-   - Log in to MongoDB Atlas at https://cloud.mongodb.com
-   - Use the connection string above
-
----
-
-## Example Use Case
-
-1. Israel registers with his ID, name, and phone number
-2. He logs in and selects **Science → Space**
-3. He enters a prompt: "Teach me about black holes"
-4. The system sends the prompt to OpenAI and returns a structured lesson
-5. Israel can revisit the History page later to view all his lessons
-
----
-
-## Bonus Features Implemented
-
-The following optional bonuses from the task requirements were implemented:
-
-- TypeScript used in both frontend and backend
-- JWT-based user authentication with role-based access control
-- Admin dashboard to view all users and their prompt history
+1. A user registers with an ID, name and phone number.
+2. They sign in and choose **Science → Space**.
+3. They send the prompt "Teach me about black holes".
+4. The server sends the prompt to the AI, saves the lesson and returns it.
+5. The lesson appears on the History page for later review.
